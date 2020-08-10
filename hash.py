@@ -52,21 +52,21 @@ def WalkPath():
     #
     processCount = 0
     errorCount = 0
-    oCVS = CSVWriter(gl_args.reportPath+'fileSystemReport.csv', gl_hashType)
+    csvOut = CSVWriter(gl_args.reportPath+'fileSystemReport.csv', gl_hashType)
     # Create a loop that processes all the files starting
     # at the rootPath, all sub-directories will also be processed
     for root, dirs, files in os.walk(gl_args.rootPath):
         # for each file obtain the filename and call the HashFile Function
         for file in files:
             fname = os.path.join(root, file)
-            result = HashFile(fname, file, oCVS)
+            result = HashFile(fname, file, csvOut)
             # if hashing was successful then increment the ProcessCount
             if result is True:
                 processCount += 1
             # if not successful, the increment the ErrorCount
             else:
                 ErrorCount += 1
-    oCVS.writerClose()
+    csvOut.writerClose()
     return(processCount)
 
 def HashFile(theFile, simpleName, o_result):
@@ -200,7 +200,7 @@ class CSVWriter:
     #
     # Methods:
     # constructor: Initializes the CSV File
-    # writeCVSRow: Writes a single row to the csv file
+    # writeCSVRow: Writes a single row to the csv file
     # writerClose: Closes the CSV File
     #
     def __init__(self, fileName, hashType):
