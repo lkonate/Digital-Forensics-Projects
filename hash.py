@@ -8,15 +8,8 @@ import argparse
 import csv
 
 def CommandLineInterface():
-    #
-    # Name: CommandLineInterface() Function
-    #
-    # Desc: Process and Validate the command line arguments
-    # use Python Standard Library module argparse
-    #
-    # Input: none
-    #
-    # Actions:
+    
+    # Desc:
     # Uses the standard library argparse to process the command line
     # establishes a global variable gl_args where any of the functions can
     # obtain argument information
@@ -50,25 +43,18 @@ def CommandLineInterface():
     return
 
 def WalkPath():
-    # Name: WalkPath() Function
-    #
-    # Desc: Walk the path specified on the command line
-    # use Python Standard Library module os and sys
-    #
-    # Input: none, uses command line arguments
-    #
-    # Actions:
-    # Uses the standard library modules os and sys
-    # to traverse the directory structure starting a root
-    # path specified by the user. For each file discovered, WalkPath
-    # will call the Function HashFile() to perform the file hashing
 
+    # Desc:
+    # Uses the standard library modules os and sys
+    # to traverse the directory structure starting at root
+    # path specified by the user. For each file discovered, it
+    # will call the Function HashFile() to perform the file hashing
+    #
     processCount = 0
     errorCount = 0
     oCVS = CSVWriter(gl_args.reportPath+'fileSystemReport.csv', gl_hashType)
     # Create a loop that processes all the files starting
     # at the rootPath, all sub-directories will also be processed
-    
     for root, dirs, files in os.walk(gl_args.rootPath):
         # for each file obtain the filename and call the HashFile Function
         for file in files:
@@ -85,20 +71,14 @@ def WalkPath():
 
 def HashFile(theFile, simpleName, o_result):
     #
-    # Name: HashFile Function
-    #
-    # Desc: Processes a single file which includes performing a hash of the file
-    # and the extraction of metadata regarding the file processed
-    # use Python Standard Library modules hashlib, os, and sys
+    # Desc:
+    # Processes a single file hash and extracts metadata
+    # Uses Python Standard Library modules hashlib, os, and sys
     #
     # Inputs:
     # theFile = the full path of the file
     # simpleName = just the filename itself
     # o_result = CSVWriter object for result
-    #
-    # Actions:
-    # Attempts to hash the file and extract metadata
-    # Call GenerateReport for successfully hashed files
     #
     # Verify that the path is valid
     if os.path.exists(theFile):
@@ -165,23 +145,20 @@ def HashFile(theFile, simpleName, o_result):
                         o_result.writeCSVRow(simpleName, theFile, fileSize, modifiedTime, accessTime, createdTime, hashValue, ownerID, groupID, fileMode)
                         return True
             else:
-                print('['+ repr(simpleName) +' is NOT a File!'+']')
+                print(repr(simpleName) +' is NOT a File!')
                 return False
         else:
-            print('['+ repr(simpleName) +' is a Link NOT a File!'+']')
+            print(repr(simpleName) +' is a Link NOT a File!')
             return False
     else:
-        print('['+ repr(simpleName) +' is NOT an existing Path!'+']')
+        print(repr(simpleName) +' is NOT an existing Path!')
     return False
 
 def ValidateDirectory(theDir):
     #
-    # Name: ValidateDirectory Function
-    #
-    # Desc: Function that will validate a directory path as
-    # existing and readable. Used for argument validation only
-    #
-    # Input: a directory path string
+    # Desc:
+    # Function that will validate a directory path as existing and readable.
+    # Used for argument validation only
     #
     # Actions:
     # if valid it will return the Directory String
@@ -199,20 +176,14 @@ def ValidateDirectory(theDir):
 
 def ValidateDirectoryWritable(theDir):
     #
-    # Name: ValidateDirectoryWritable Function
-    #
-    # Desc: Function that will validate a directory path as
-    # existing and writable. Used for argument validation only
-    #
-    # Input: a directory path string
+    # Desc:
+    # Function that will validate a directory path as existing and writable.
+    # Used for argument validation only
     #
     # Actions:
-    # if valid will return the Directory String
-    #
     # if invalid it will raise an ArgumentTypeError within argparse
     # which will in turn be reported by argparse to the user
     #
-
     # Validate the path is a directory
     if not os.path.isdir(theDir):
         raise argparse.ArgumentTypeError('Directory does not exist!')
@@ -222,26 +193,10 @@ def ValidateDirectoryWritable(theDir):
     else:
         raise argparse.ArgumentTypeError('Directory is not writable!')
 
-def print(msg):
-    #
-    # Name: print() Function
-    #
-    # Desc: Displays the message if the verbose command line option is present
-    #
-    # Input: message type string
-    #
-    # Actions:
-    # Uses the standard library print function to display the message
-    #
-    if gl_args.verbose:
-        print(msg)
-    return
-
 class CSVWriter:
     #
-    # Class: CSVWriter
-    #
-    # Desc: Handles all methods related to comma separated value operations
+    # Desc:
+    # Handles all methods related to comma separated value operations
     #
     # Methods:
     # constructor: Initializes the CSV File
